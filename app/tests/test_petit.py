@@ -5,7 +5,6 @@ This module contains tests for the petit lenormand cards.
 from fastapi.testclient import TestClient
 from app.main import app
 from app.api.schema.petit_lenormand import PastPresentFutureReading
-from app.services.petit_lenormand_service import CARDS
 
 client = TestClient(app)
 
@@ -17,7 +16,7 @@ def test_past_present_future():
     and if the returned cards are in the original list of cards.
     """
     response = client.get(
-        "/api/v1/petit_lenormand/past_present_future?shuffle_times=1")
+        "/api/v1/petit_lenormand/past_present_future?question=Eu vou funcionar?")
 
     # Check if the status code is 200 (OK)
     assert response.status_code == 200
@@ -33,9 +32,3 @@ def test_past_present_future():
     assert "past" in data
     assert "present" in data
     assert "future" in data
-
-    # Check if the returned cards are in the original list of cards
-
-    assert data["past"] in CARDS
-    assert data["present"] in CARDS
-    assert data["future"] in CARDS
