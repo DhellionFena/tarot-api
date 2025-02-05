@@ -2,24 +2,37 @@
 This module defines the endpoints for the petit lenormand cards.
 """
 
-from fastapi import APIRouter, Query
-from app.services.petit_lenormand_service import read_past_present_future
-from app.api.schema.petit_lenormand import PastPresentFutureReading
+from fastapi import APIRouter
+from app.services.petit_lenormand_service import read_past_present_future, read_yes_or_no
+from app.api.schema.petit_lenormand import PastPresentFutureReading, YesOrNoReading
 
 router = APIRouter()
 
 
 @router.get("/petit_lenormand/past_present_future", response_model=PastPresentFutureReading)
-async def past_present_future(shuffle_times: int = Query(1, ge=1, le=5)):
+async def past_present_future(question: str):
     """
     Endpoint to perform a past, present, and future card reading.
 
     Args:
-        shuffle_times (int): Number of times to shuffle the cards before drawing. 
-                             Must be between 1 and 5, inclusive. Default is 1.
+        question (str): The question or text to be used for generating a unique shuffle pattern.
 
     Returns:
-        list[Card]: A list of three cards representing the past, present, and future.
+        PastPresentFutureReading: An object containing three cards representing the past, present, and future.
     """
 
-    return read_past_present_future(shuffle_times)
+    return read_past_present_future(question)
+
+
+@router.get("/petit_lenormand/yes_or_no", response_model=YesOrNoReading)
+async def yes_or_no(question: str):
+    """
+    Endpoint to perform a yes or no card reading.
+
+    Args:
+        question (str): The question or text to be used for generating a unique shuffle pattern.
+
+    Returns:
+        YesOrNoReading: An object containing the response to the question and the first and last cards drawn.
+    """
+    return read_yes_or_no(question)

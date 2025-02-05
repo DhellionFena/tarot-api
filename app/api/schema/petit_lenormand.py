@@ -3,23 +3,22 @@ This module defines the schema for the petit lenormand cards.
 """
 
 from pydantic import BaseModel
-
-
-class PetitLenormandCard(BaseModel):
-    """
-    A petit lenormand card.
-
-    Attributes:
-        name (str): The name of the card.
-        description (str): A brief description of the card.
-        number (int): The number of the card.
-    """
-    name: str
-    description: str
-    number: int
+from app.models.petit_lenormand_model import PetitLenormandCard
 
 
 class PastPresentFutureReading(BaseModel):
+    """
+    Represents a reading consisting of a past, present, and future card.
+    """
     past: PetitLenormandCard
     present: PetitLenormandCard
     future: PetitLenormandCard
+
+
+class YesOrNoReading(BaseModel):
+    """
+    Represents a reading consisting of a past, present, and future card.
+    """
+    response: str
+    first_card: PetitLenormandCard
+    last_card: PetitLenormandCard
